@@ -1496,11 +1496,26 @@ end
 
 -----------------------------------------
 
+local loadedBagId = -1
+local loadedSlotId = -1
+
 local function Atr_LoadContainerItemToSellPane(slot)
   Auctionator.Debug.Message( 'Atr_LoadContainerItemToSellPane', slot )
 
   local bagID  = slot:GetParent():GetID();
   local slotID = slot:GetID();
+
+  if bagID == loadedBagId and slotID == loadedSlotId then
+    Atr_CreateAuction_OnClick();
+
+    loadedBagId = -1
+    loadedSlotId = -1
+
+    return
+  end
+
+  loadedBagId = bagID
+  loadedSlotId = slotID
 
   if (not Atr_IsTabSelected(SELL_TAB)) then
     Atr_SelectPane (SELL_TAB);
